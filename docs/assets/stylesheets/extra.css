@@ -1,0 +1,12 @@
+:root {
+  --md-text-font: "Inter", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --md-code-font: "JetBrains Mono", "Cascadia Code", monospace;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+}
+
+.md-typeset h2 {
+  font-weight: 650;
+}
