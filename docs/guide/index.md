@@ -1,12 +1,17 @@
 # 快速开始
 
-这个目录用于说明如何维护知识库。
+这个页面放在顶部导航的「其他」分组里，主要记录站点维护、发布和模板相关说明。
+
+## 顶部导航怎么分
+
+- 首页：站点入口
+- 讲解：棒球规则和基础说明
+- 训练：训练方法和训练计划
+- 其他：维护说明、发布说明、模板
 
 ## 你以后主要会做什么？
 
-日常使用时，通常只需要：
-
-1. 在 `docs/notes/` 目录添加 Markdown 文章。
+1. 在对应分类里添加 Markdown 文章。
 2. 修改 `mkdocs.yml` 里的 `nav` 导航。
 3. 提交并推送到 GitHub。
 
@@ -18,26 +23,25 @@
 .
 ├─ docs/
 │  ├─ index.md                 # 首页
-│  ├─ guide/                   # 使用说明
-│  ├─ notes/                   # 知识库文章
-│  ├─ templates/               # 文章模板
+│  ├─ baseball-training.md     # 训练
+│  ├─ guide/                   # 其他
+│  ├─ notes/                   # 讲解
+│  ├─ writing/                 # 写作模板
 │  └─ assets/                  # 图片、样式等资源
 ├─ mkdocs.yml                  # MkDocs 配置文件
 └─ .github/workflows/deploy.yml # GitHub Pages 自动部署
 ```
 
+## 搜索
+
+顶部搜索已启用，会自动搜索全站页面，并把结果一条条列出来。
+
 ## 推荐分类方式
 
-你可以按主题拆分目录，例如：
+建议直接用顶部的四个分组：
 
 ```text
-docs/notes/
-├─ frontend/
-├─ backend/
-├─ database/
-├─ tools/
-├─ reading/
-└─ projects/
+首页 / 讲解 / 训练 / 其他
 ```
 
-然后在 `mkdocs.yml` 中配置导航。
+后续内容增长时，优先继续往对应分组里加页面。

@@ -19,7 +19,32 @@ mkdocs serve
 访问：
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8000/
+```
+
+## 顶部导航
+
+站点现在只保留和棒球内容相关的分组：
+
+- 首页
+- 讲解
+- 训练
+- 其他
+
+其中“讲解”放棒球规则和基础说明，“其他”是预留分类。
+
+顶部搜索已经启用，可以直接搜索全站页面，结果会一条条列出来。
+
+## 导航示例
+
+```yaml
+nav:
+  - 首页: index.md
+  - 讲解:
+      - 棒球规则: notes/rules.md
+  - 训练:
+      - 第一篇：棒球入门训练: baseball-training.md
+  - 其他: other/index.md
 ```
 
 ## 路由规则
@@ -42,51 +67,92 @@ use_directory_urls: true
 /baseball-training.html
 ```
 
-## 添加第一篇文章
+## 如何新增文章
 
-现在第一篇文章已经放在：
+1. 在 `docs/` 下新建 Markdown 文件。
+2. 写入标题和正文。
+3. 把新文件加到 `mkdocs.yml` 的 `nav` 里。
 
-```text
-docs/baseball-training.md
-```
+例如：
 
-并且已经在 `mkdocs.yml` 的 `nav` 中添加：
+- `docs/notes/rules.md`
+- `docs/other/index.md`
 
-```yaml
-nav:
-  - 首页: index.md
-  - 第一篇：棒球入门训练: baseball-training.md
-```
+## 页面与文件的关系
 
-## 以后添加新文章
+- `docs/` 是内容根目录
+- `docs/*.md` 可以直接成为页面
+- `docs/子文件夹/` 用来做内容分组或放资源
+- `nav` 决定网站菜单怎么显示
 
-1. 在 `docs/` 下新建 Markdown 文件，例如：
+## 文章模板
 
-   ```text
-   docs/catch-and-throw.md
-   ```
+复制下面这段到你的文章里：
 
-2. 写入文章标题和正文：
+````markdown
+# 文章标题
 
-   ```markdown
-   # 传接球基础训练
+## 摘要
 
-   这里写文章内容。
-   ```
+用 2-3 句话说明这篇文章解决什么问题，适合什么时候阅读。
 
-3. 打开 `mkdocs.yml`，在 `nav` 中添加入口：
+## 背景
 
-   ```yaml
-   nav:
-     - 首页: index.md
-     - 第一篇：棒球入门训练: baseball-training.md
-     - 传接球基础训练: catch-and-throw.md
-   ```
+- 为什么要记录这个主题
+- 遇到了什么问题
+- 适用范围是什么
 
-4. 本地预览确认无误后提交并推送。
+## 核心内容
 
-## 构建
+### 小节一
+
+正文内容。
+
+### 小节二
+
+正文内容。
+
+## 示例
 
 ```bash
-mkdocs build --strict
+# 示例命令
+example command
+```
+
+## 图片和视频
+
+单张图片：
+
+```markdown
+![图片说明](../assets/images/example.jpg)
+```
+
+多张图片自适应排列：
+
+```html
+<div class="media-grid">
+  <figure>
+    <img src="../assets/images/example-1.jpg" alt="第一张图片说明">
+    <figcaption>第一张图片说明</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/images/example-2.jpg" alt="第二张图片说明">
+    <figcaption>第二张图片说明</figcaption>
+  </figure>
+</div>
+```
+
+本地视频：
+
+```html
+<video class="media-video" controls>
+  <source src="../assets/videos/example.mp4" type="video/mp4">
+</video>
+```
+````
+
+## 构建（上传）
+
+```bash
+mkdocs gh-deploy
 ```

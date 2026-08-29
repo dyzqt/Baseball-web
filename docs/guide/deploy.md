@@ -58,12 +58,12 @@ site/
 
 ## 修改站点地址
 
-发布前建议修改 `mkdocs.yml` 中这些字段：
+发布到 GitHub Pages 时，把 `mkdocs.yml` 中这些字段填成你自己的真实地址：
 
 ```yaml
-site_url: https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY_NAME/
-repo_name: YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME
-repo_url: https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME
+site_url: 你的 GitHub Pages 地址
+repo_name: 你的用户名/你的仓库名
+repo_url: 你的 GitHub 仓库地址
 ```
 
-把 `YOUR_GITHUB_USERNAME` 和 `YOUR_REPOSITORY_NAME` 替换成你的 GitHub 用户名和仓库名。
+本地预览地址始终是 `http://127.0.0.1:8000/`，不会带仓库名。

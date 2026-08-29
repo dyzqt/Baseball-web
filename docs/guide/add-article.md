@@ -1,58 +1,48 @@
 # 如何添加文章
 
-后续维护知识库时，你主要只需要添加 Markdown 文件。
+后续维护时，主要就是把文章放进顶部的四个分组里。
 
-## 1. 新建文章
+## 1. 先选分类
 
-在 `docs/notes/` 下新建文件，例如：
+- 首页：站点入口
+- 讲解：棒球规则和基础说明
+- 训练：训练方法、动作拆解、训练计划
+- 其他：预留分类
+
+## 2. 新建文章
+
+常见位置示例：
 
 ```text
-docs/notes/git-basic.md
+docs/index.md
+docs/baseball-training.md
+docs/notes/rules.md
+docs/other/index.md
+docs/guide/index.md
+docs/guide/add-article.md
+docs/guide/deploy.md
+docs/writing/article-template.md
 ```
 
-内容示例：
+如果某个分组下面还有很多文章，可以继续做子目录。
 
-````markdown
-# Git 基础
-
-## 摘要
-
-这篇文章记录 Git 常用命令。
-
-## 常用命令
-
-```bash
-git status
-git add .
-git commit -m "update notes"
-git push
-```
-````
-
-## 2. 添加到导航
-
-打开 `mkdocs.yml`，找到 `nav` 部分：
+## 3. 加到导航
 
 ```yaml
 nav:
   - 首页: index.md
-  - 笔记:
-      - notes/index.md
-      - 示例文章: notes/example.md
+  - 讲解:
+      - 棒球规则: notes/rules.md
+  - 训练:
+      - 第一篇：棒球入门训练: baseball-training.md
+  - 其他: other/index.md
 ```
 
-添加你的文章：
+## 4. 搜索怎么用
 
-```yaml
-nav:
-  - 首页: index.md
-  - 笔记:
-      - notes/index.md
-      - 示例文章: notes/example.md
-      - Git 基础: notes/git-basic.md
-```
+顶部搜索已经启用，会自动搜索全站页面，结果会一条条列出来。只要页面被 MkDocs 构建出来，就会被搜索到。
 
-## 3. 本地预览
+## 5. 本地预览
 
 ```bash
 mkdocs serve
@@ -64,6 +54,6 @@ mkdocs serve
 http://127.0.0.1:8000
 ```
 
-## 4. 发布
+## 6. 发布
 
 提交并推送到 GitHub 后，GitHub Actions 会自动构建并发布到 GitHub Pages。

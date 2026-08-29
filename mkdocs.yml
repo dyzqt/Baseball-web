@@ -1,4 +1,4 @@
-site_name: 棒球入门训练
+site_name: 棒球知识库
 site_description: 介绍棒球基础知识和训练方法的静态网站
 site_author: Baseball Training
 use_directory_urls: true
@@ -6,18 +6,25 @@ use_directory_urls: true
 theme:
   name: material
   language: zh
+  logo: assets/images/队标.png
+  favicon: assets/images/队标.png
   palette:
-    primary: red
-    accent: red
+    primary: blue
+    accent: light-blue
+  features:
+    - search.suggest
+    - search.highlight
 
-plugins: []
+plugins:
+  - search:
+      lang:
+        - zh
 
 markdown_extensions:
   - admonition
   - attr_list
   - md_in_html
   - toc:
-      permalink: true
   - tables
 
 extra:
@@ -28,9 +35,13 @@ extra_css:
 
 exclude_docs: |
   guide/*
-  notes/*
+  notes/example.md
   writing/*
 
 nav:
   - 首页: index.md
-  - 第一篇：棒球入门训练: baseball-training.md
+  - 讲解:
+      - 棒球规则: notes/rules.md
+  - 训练:
+      - 第一篇：棒球入门训练: baseball-training.md
+  - 其他: other/index.md
