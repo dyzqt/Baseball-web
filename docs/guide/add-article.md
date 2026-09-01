@@ -7,6 +7,7 @@
 - 首页：站点入口
 - 讲解：棒球规则和基础说明
 - 训练：训练方法、动作拆解、训练计划
+- 时刻：图片展示
 - 其他：预留分类
 
 ## 2. 新建文章
@@ -17,6 +18,7 @@
 docs/index.md
 docs/baseball-training.md
 docs/notes/rules.md
+docs/gallery/index.md
 docs/other/index.md
 docs/guide/index.md
 docs/guide/add-article.md
@@ -35,6 +37,7 @@ nav:
       - 棒球规则: notes/rules.md
   - 训练:
       - 第一篇：棒球入门训练: baseball-training.md
+  - 时刻: gallery/index.md
   - 其他: other/index.md
 ```
 
@@ -54,6 +57,15 @@ mkdocs serve
 http://127.0.0.1:8000
 ```
 
-## 6. 发布
+## 6. 时刻
+
+如果需要一组独立的图片展示页，直接把图片放到 `docs/gallery/`，再维护 `docs/gallery/index.md`。
+
+- 页面只保留一个一级标题
+- 文件名首字是 `大` 的图片会稍大一点
+- 其他图片会自动紧密排成多栏布局
+- 这个模块和普通文章里的插图是分开的
+
+## 7. 发布
 
 提交并推送到 GitHub 后，GitHub Actions 会自动构建并发布到 GitHub Pages。

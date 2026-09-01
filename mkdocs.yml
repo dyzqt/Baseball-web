@@ -15,6 +15,14 @@ theme:
     - search.suggest
     - search.highlight
 
+hooks:
+  - hooks/gallery.py
+  - hooks/transition.py
+
+watch:
+  - hooks/gallery.py
+  - hooks/transition.py
+
 plugins:
   - search:
       lang:
@@ -33,6 +41,10 @@ extra:
 extra_css:
   - assets/stylesheets/extra.css
 
+extra_javascript:
+  - assets/javascripts/transition.js
+  - assets/javascripts/gallery.js
+
 exclude_docs: |
   guide/*
   notes/example.md
@@ -41,7 +53,8 @@ exclude_docs: |
 nav:
   - 首页: index.md
   - 讲解:
-      - 棒球规则: notes/rules.md
+      - 棒球规则（简）: notes/rules.md
   - 训练:
       - 第一篇：棒球入门训练: baseball-training.md
+  - 时刻: gallery/index.md
   - 其他: other/index.md
