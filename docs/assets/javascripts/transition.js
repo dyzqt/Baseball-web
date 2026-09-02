@@ -37,7 +37,6 @@
           <img class="page-transition__frame" alt="" />
           <div class="page-transition__fallback" aria-hidden="true"></div>
         </div>
-        <p class="page-transition__caption">加载中…</p>
       </div>
     `;
     return node;

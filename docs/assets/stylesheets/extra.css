@@ -408,27 +408,8 @@ body.page-transition-lock {
   z-index: 0;
 }
 
-.page-transition__caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 2.5rem;
-  margin: 0;
-  color: rgba(15, 23, 42, 0.58);
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
 .page-transition.is-revealing {
   animation: transition-rise 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.page-transition.is-revealing .page-transition__caption {
-  opacity: 0;
-  transform: translateY(0.5rem);
-  transition: opacity 120ms ease, transform 120ms ease;
 }
 
 @keyframes transition-rise {
