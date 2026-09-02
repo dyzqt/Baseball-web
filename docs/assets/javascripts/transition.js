@@ -1,22 +1,31 @@
 (() => {
+  const STORAGE_KEY = "baseball-web:transition";
   const SCRIPT_URL = new URL(document.currentScript?.src ?? window.location.href, window.location.href);
   const FRAME_ROOT = new URL("../transitions/page-rise/frames/", SCRIPT_URL);
-  const FRAME_MANIFEST_URL = new URL("manifest.json?v=6", FRAME_ROOT).toString();
-  const FRAME_CACHE_KEY = "baseball-web:transition:frames:v6";
+  const FRAME_MANIFEST_URL = new URL("manifest.json?v=11", FRAME_ROOT).toString();
+  const FRAME_CACHE_KEY = `${STORAGE_KEY}:frames:v11`;
   const FRAME_INTERVAL = 80;
-  const MIN_VISIBLE_MS = 360;
+  const REVEAL_DURATION = 720;
   const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 
   const state = {
     busy: false,
-    playingFrames: false,
+    waitingForLoad: false,
+    playbackActive: false,
+    playbackStartedAt: 0,
+    frameCount: 0,
     frameTimer: 0,
     framePromise: null,
     cachedFrames: null,
+    revealTimer: 0,
     reducedMotion: window.matchMedia(REDUCED_QUERY).matches,
   };
 
   const overlay = (() => {
+    const existing = document.querySelector(".page-transition");
+    if (existing instanceof HTMLElement) {
+      return existing;
+    }
     const node = document.createElement("div");
     node.className = "page-transition";
     node.setAttribute("aria-hidden", "true");
@@ -28,10 +37,45 @@
           <img class="page-transition__frame" alt="" />
           <div class="page-transition__fallback" aria-hidden="true"></div>
         </div>
+        <p class="page-transition__caption">加载中…</p>
       </div>
     `;
     return node;
   })();
+
+  function safeReadPending() {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return null;
+      }
+      sessionStorage.removeItem(STORAGE_KEY);
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed.href !== "string") {
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function safeWritePending(href) {
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ href, at: Date.now() }),
+      );
+    } catch {
+    }
+  }
+
+  function safeClearPending() {
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+    }
+  }
 
   function readCachedFrames() {
     try {
@@ -82,14 +126,40 @@
     }
   }
 
+  function clearRevealTimer() {
+    if (state.revealTimer) {
+      window.clearTimeout(state.revealTimer);
+      state.revealTimer = 0;
+    }
+  }
+
+  function minimumPlaybackDuration(frames) {
+    return Math.max(REVEAL_DURATION, frames.length * FRAME_INTERVAL);
+  }
+
+  function canReveal(frames) {
+    if (!state.playbackActive) {
+      return false;
+    }
+    if (state.reducedMotion) {
+      return true;
+    }
+    return Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames);
+  }
+
   function cleanup() {
+    clearRevealTimer();
     stopFrames();
-    overlay.classList.remove("is-active");
+    overlay.classList.remove("is-active", "is-revealing");
     overlay.dataset.phase = "idle";
     overlay.dataset.mode = "fallback";
+    document.documentElement.classList.remove("page-transition-preload");
     lockScroll(false);
     state.busy = false;
-    state.playingFrames = false;
+    state.waitingForLoad = false;
+    state.playbackActive = false;
+    state.playbackStartedAt = 0;
+    state.frameCount = 0;
     if (overlay.parentNode) {
       overlay.remove();
     }
@@ -142,11 +212,11 @@
   }
 
   async function startFramePlayback() {
-    if (state.reducedMotion || !state.playingFrames) {
+    if (state.reducedMotion || !state.playbackActive) {
       return false;
     }
     const frames = await getFrames();
-    if (!state.playingFrames || !frames.length || !overlay.isConnected) {
+    if (!state.playbackActive || !frames.length || !overlay.isConnected || overlay.dataset.phase === "reveal") {
       overlay.dataset.mode = "fallback";
       return false;
     }
@@ -156,19 +226,55 @@
       return false;
     }
     overlay.dataset.mode = "frames";
+    state.playbackStartedAt = Date.now();
+    state.frameCount = 0;
     let index = 0;
     const tick = () => {
-      if (!overlay.isConnected || !state.playingFrames) {
+      if (!overlay.isConnected || overlay.dataset.phase === "reveal" || !state.playbackActive) {
         stopFrames();
         return;
       }
       img.src = frames[index];
       index = (index + 1) % frames.length;
+      state.frameCount += 1;
+      if (index === 0 && canReveal(frames)) {
+        stopFrames();
+        revealOverlay();
+      }
     };
     tick();
     stopFrames();
     state.frameTimer = window.setInterval(tick, FRAME_INTERVAL);
     return true;
+  }
+
+  function revealOverlay() {
+    if (!overlay.isConnected || !state.playbackActive) {
+      return;
+    }
+    if (!state.reducedMotion && state.frameCount < 1) {
+      return;
+    }
+    overlay.dataset.phase = "reveal";
+    overlay.classList.add("is-revealing");
+    clearRevealTimer();
+    state.revealTimer = window.setTimeout(() => {
+      cleanup();
+    }, state.reducedMotion ? 1 : REVEAL_DURATION);
+  }
+
+  function beginNavigation(href) {
+    if (state.busy) {
+      return;
+    }
+    state.busy = true;
+    safeWritePending(href);
+    activate("leaving");
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        window.location.assign(href);
+      });
+    });
   }
 
   function shouldIntercept(anchor) {
@@ -201,37 +307,6 @@
     return true;
   }
 
-  function waitForPaint() {
-    return new Promise((resolve) => {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(resolve);
-      });
-    });
-  }
-
-  function sleep(ms) {
-    return new Promise((resolve) => {
-      window.setTimeout(resolve, ms);
-    });
-  }
-
-  async function beginNavigation(href) {
-    if (state.busy) {
-      return;
-    }
-    state.busy = true;
-    activate("leaving");
-    state.playingFrames = true;
-    const startedAt = Date.now();
-    void startFramePlayback();
-    await waitForPaint();
-    const elapsed = Date.now() - startedAt;
-    if (elapsed < MIN_VISIBLE_MS) {
-      await sleep(MIN_VISIBLE_MS - elapsed);
-    }
-    window.location.assign(href);
-  }
-
   function installGuards() {
     document.addEventListener(
       "click",
@@ -250,10 +325,56 @@
           return;
         }
         event.preventDefault();
-        void beginNavigation(anchor.href);
+        beginNavigation(anchor.href);
       },
       true,
     );
+  }
+
+  function waitForLoad() {
+    if (document.readyState === "complete") {
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      window.addEventListener("load", resolve, { once: true });
+    });
+  }
+
+  async function initIncomingTransition() {
+    const pending = safeReadPending();
+    if (!pending) {
+      cleanup();
+      return;
+    }
+    mountOverlay();
+    activate("holding");
+    state.playbackActive = true;
+    void startFramePlayback();
+    await waitForLoad();
+    safeClearPending();
+    if (state.reducedMotion) {
+      revealOverlay();
+      return;
+    }
+    const frames = await getFrames();
+    if (!frames.length) {
+      revealOverlay();
+      return;
+    }
+    if (state.frameCount >= frames.length && Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames)) {
+      revealOverlay();
+      return;
+    }
+    const check = window.setInterval(() => {
+      if (!overlay.isConnected) {
+        window.clearInterval(check);
+        return;
+      }
+      if (state.frameCount >= frames.length && Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames)) {
+        window.clearInterval(check);
+        revealOverlay();
+      }
+    }, FRAME_INTERVAL);
   }
 
   function init() {
@@ -264,6 +385,9 @@
     window.addEventListener("pageshow", handlePageLifecycle);
     window.addEventListener("pagehide", handlePageLifecycle);
     installGuards();
+    initIncomingTransition().catch(() => {
+      cleanup();
+    });
   }
 
   init();
