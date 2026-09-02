@@ -1,6 +1,6 @@
 {
   "nodeVersion": "22.11.0",
-  "installCommand": "python3 -m pip install -r requirements.txt",
+  "installCommand": "/usr/bin/python3 -m pip install -r requirements.txt",
   "buildCommand": "mkdocs build",
   "outputDirectory": "site"
 }
