@@ -6,6 +6,7 @@ from pathlib import Path
 IMAGE_SUFFIXES = {".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"}
 FRAME_DIR = Path("assets/transitions/page-rise/frames")
 FRAME_MANIFEST = FRAME_DIR / "manifest.json"
+MOMENT_TRANSITION_BG = "#020617"
 EARLY_TRANSITION_STYLE = """<style>
 html.page-transition-lock,
 body.page-transition-lock {
@@ -21,7 +22,7 @@ body.page-transition-lock {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
   transition: none;
 }
 
@@ -42,7 +43,7 @@ body.page-transition-lock {
   inset: 0;
   display: grid;
   place-items: center;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
 }
 
 .page-transition__frame,
@@ -51,7 +52,7 @@ body.page-transition-lock {
   inset: 0;
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
 }
 
 .page-transition__frame {
@@ -129,9 +130,18 @@ def _collect_frames(docs_dir: str) -> list[str]:
 def on_post_page(output_content: str, *, page, config):
     if "<head>" not in output_content:
         return output_content
+
+    transition_bg_bootstrap = ""
+    if page.file.src_uri == MOMENT_PAGE:
+        transition_bg_bootstrap = (
+            "<style>"
+            f":root {{ --page-transition-bg: {MOMENT_TRANSITION_BG}; }}"
+            "</style>\n"
+        )
+
     return output_content.replace(
         "<head>",
-        f"<head>\n{EARLY_TRANSITION_STYLE}\n{EARLY_TRANSITION_BOOTSTRAP}",
+        f"<head>\n{EARLY_TRANSITION_STYLE}\n{transition_bg_bootstrap}{EARLY_TRANSITION_BOOTSTRAP}",
         1,
     )
 

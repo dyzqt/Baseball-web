@@ -10,6 +10,7 @@
   --md-default-fg-color--light: #475569;
   --md-typeset-a-color: #0369a1;
   --md-code-bg-color: #eff6ff;
+  --page-transition-bg: var(--md-default-bg-color);
 }
 
 .md-header,
@@ -156,6 +157,7 @@
 }
 
 body.moment-page {
+  --page-transition-bg: #020617;
   overflow-x: hidden;
   background: #020617;
 }
@@ -359,7 +361,7 @@ body.page-transition-lock {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
   transition: none;
 }
 
@@ -380,7 +382,7 @@ body.page-transition-lock {
   inset: 0;
   display: grid;
   place-items: center;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
 }
 
 .page-transition__frame,
@@ -389,7 +391,7 @@ body.page-transition-lock {
   inset: 0;
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: var(--page-transition-bg, var(--md-default-bg-color, #f8fafc));
 }
 
 .page-transition__frame {

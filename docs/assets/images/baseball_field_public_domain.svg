@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" role="img" aria-labelledby="title desc">
+  <title>扇形棒球场示意图</title>
+  <desc>显示本垒在底部、内场菱形、从一垒和三垒向外延伸的界线，以及扇形外场墙的棒球场示意图。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d8a46"/>
+      <stop offset="100%" stop-color="#166f3a"/>
+    </linearGradient>
+    <linearGradient id="fair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2ea95a"/>
+      <stop offset="100%" stop-color="#227f44"/>
+    </linearGradient>
+    <linearGradient id="dirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d6ae72"/>
+      <stop offset="100%" stop-color="#bd8f55"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0b2a16" flood-opacity="0.32"/>
+    </filter>
+    <path id="fairShape" d="M480 560 L100 180 C260 20, 700 20, 860 180 L480 560 Z"/>
+  </defs>
+
+  <rect width="960" height="700" fill="url(#bg)"/>
+  <rect width="960" height="700" fill="#134f2a" opacity="0.18"/>
+
+  <use href="#fairShape" fill="url(#fair)" opacity="0.96"/>
+  <use href="#fairShape" fill="none" stroke="#1b6f38" stroke-width="6"/>
+
+  <path d="M100 180 C260 20, 700 20, 860 180" fill="none" stroke="#1b3d25" stroke-width="18" stroke-linecap="round"/>
+  <path d="M100 180 C260 20, 700 20, 860 180" fill="none" stroke="#90c17f" stroke-width="4" stroke-linecap="round"/>
+
+  <path d="M480 560 L620 420 L480 280 L340 420 Z" fill="url(#dirt)" stroke="#a47141" stroke-width="5" filter="url(#shadow)"/>
+  <path d="M480 560 L860 180" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M480 560 L100 180" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M340 420 L620 420" stroke="#d4b07a" stroke-width="4" stroke-dasharray="10 8" opacity="0.7"/>
+  <path d="M480 280 L480 560" stroke="#d4b07a" stroke-width="4" stroke-dasharray="10 8" opacity="0.7"/>
+
+  <circle cx="480" cy="425" r="18" fill="#b98747" opacity="0.95"/>
+  <circle cx="480" cy="425" r="8" fill="#d9b37d" stroke="#8c5c2a" stroke-width="2.5"/>
+
+  <polygon points="480,548 491,559 486,574 474,574 469,559" fill="#ffffff" stroke="#e4e4e4" stroke-width="2"/>
+  <rect x="612" y="412" width="14" height="14" transform="rotate(45 619 419)" fill="#ffffff" stroke="#e4e4e4" stroke-width="2"/>
+  <rect x="473" y="273" width="14" height="14" transform="rotate(45 480 280)" fill="#ffffff" stroke="#e4e4e4" stroke-width="2"/>
+  <rect x="334" y="412" width="14" height="14" transform="rotate(45 341 419)" fill="#ffffff" stroke="#e4e4e4" stroke-width="2"/>
+
+  <text x="480" y="642" text-anchor="middle" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="22" font-weight="700">本垒</text>
+  <text x="636" y="426" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="22" font-weight="700">一垒</text>
+  <text x="480" y="252" text-anchor="middle" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="22" font-weight="700">二垒</text>
+  <text x="278" y="426" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="22" font-weight="700">三垒</text>
+  <text x="480" y="398" text-anchor="middle" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16" font-weight="700">投手丘</text>
+  <text x="480" y="92" text-anchor="middle" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="700">外场墙</text>
+  <text x="480" y="350" text-anchor="middle" fill="#ffffff" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="22" font-weight="700">内场</text>
+  <text x="480" y="140" text-anchor="middle" fill="#f7fff4" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="20" font-weight="700">扇形外场</text>
+</svg>

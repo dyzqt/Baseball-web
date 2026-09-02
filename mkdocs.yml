@@ -54,6 +54,8 @@ nav:
   - 首页: index.md
   - 讲解:
       - 棒球规则（简）: notes/rules.md
+      - 棒球专业名词: notes/专有名词.md
+      - 棒球规则（详）: notes/详细规则.md
   - 训练:
       - 第一篇：棒球入门训练: baseball-training.md
   - 时刻: gallery/index.md

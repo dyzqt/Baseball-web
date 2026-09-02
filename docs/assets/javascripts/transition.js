@@ -210,6 +210,19 @@
     return state.framePromise;
   }
 
+  function preloadImage(src) {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.onload = () => resolve(src);
+      image.onerror = () => resolve(null);
+      image.src = src;
+      if (image.decode) {
+        image.decode().then(() => resolve(src)).catch(() => {});
+      }
+    });
+  }
+
   async function startFramePlayback() {
     if (state.reducedMotion || !state.playbackActive) {
       return false;
@@ -224,10 +237,16 @@
       overlay.dataset.mode = "fallback";
       return false;
     }
+    const firstFrame = await preloadImage(frames[0]);
+    if (!state.playbackActive || !overlay.isConnected || overlay.dataset.phase === "reveal" || !firstFrame) {
+      overlay.dataset.mode = "fallback";
+      return false;
+    }
+    img.src = firstFrame;
     overlay.dataset.mode = "frames";
     state.playbackStartedAt = Date.now();
-    state.frameCount = 0;
-    let index = 0;
+    state.frameCount = 1;
+    let index = 1;
     const tick = () => {
       if (!overlay.isConnected || overlay.dataset.phase === "reveal" || !state.playbackActive) {
         stopFrames();
@@ -241,7 +260,6 @@
         revealOverlay();
       }
     };
-    tick();
     stopFrames();
     state.frameTimer = window.setInterval(tick, FRAME_INTERVAL);
     return true;
