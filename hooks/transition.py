@@ -7,6 +7,7 @@ IMAGE_SUFFIXES = {".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"}
 FRAME_DIR = Path("assets/transitions/page-rise/frames")
 FRAME_MANIFEST = FRAME_DIR / "manifest.json"
 MOMENT_TRANSITION_BG = "#020617"
+MOMENT_PAGE = "gallery/index.md"
 EARLY_TRANSITION_STYLE = """<style>
 html.page-transition-lock,
 body.page-transition-lock {
