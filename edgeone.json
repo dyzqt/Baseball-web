@@ -1,6 +1,6 @@
 {
   "nodeVersion": "22.11.0",
-  "installCommand": "true",
-  "buildCommand": "true",
+  "installCommand": "/usr/bin/python3 -m ensurepip --upgrade && /usr/bin/python3 -m pip install -r requirements.txt",
+  "buildCommand": "/usr/bin/python3 -m mkdocs build --strict",
   "outputDirectory": "site"
 }
