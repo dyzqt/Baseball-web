@@ -17,11 +17,9 @@ theme:
 
 hooks:
   - hooks/gallery.py
-  - hooks/transition.py
 
 watch:
   - hooks/gallery.py
-  - hooks/transition.py
 
 plugins:
   - search:
@@ -42,13 +40,11 @@ extra_css:
   - assets/stylesheets/extra.css
 
 extra_javascript:
-  - assets/javascripts/transition.js
   - assets/javascripts/gallery.js
 
 exclude_docs: |
   guide/*
   notes/example.md
-  writing/*
 
 nav:
   - 首页: index.md
@@ -57,6 +53,7 @@ nav:
       - 棒球专业名词: notes/专有名词.md
       - 棒球规则（详）: notes/详细规则.md
   - 训练:
-      - 第一篇：棒球入门训练: baseball-training.md
+      - 传接球训练: writing/传接球.md
+      - 打击训练: writing/打击.md
   - 时刻: gallery/index.md
   - 其他: other/index.md
