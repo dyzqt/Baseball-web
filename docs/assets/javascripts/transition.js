@@ -2,24 +2,24 @@
   const STORAGE_KEY = "baseball-web:transition";
   const SCRIPT_URL = new URL(document.currentScript?.src ?? window.location.href, window.location.href);
   const FRAME_ROOT = new URL("../transitions/page-rise/frames/", SCRIPT_URL);
-  const FRAME_MANIFEST_URL = new URL("manifest.json?v=11", FRAME_ROOT).toString();
-  const FRAME_CACHE_KEY = `${STORAGE_KEY}:frames:v11`;
-  const FRAME_INTERVAL = 80;
-  const REVEAL_DURATION = 720;
+  const FRAME_VERSION = "16";
+  const FRAME_URL = new URL(`000.png?v=${FRAME_VERSION}`, FRAME_ROOT).toString();
+  const TRANSITION_BG = "#020617";
+  const FRAME_PRELOAD_TIMEOUT = 1200;
+  const PLAYBACK_DURATION = 520;
+  const REVEAL_DURATION = 480;
   const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 
   const state = {
     busy: false,
-    waitingForLoad: false,
     playbackActive: false,
     playbackStartedAt: 0,
-    frameCount: 0,
-    frameTimer: 0,
     framePromise: null,
-    cachedFrames: null,
     revealTimer: 0,
     reducedMotion: window.matchMedia(REDUCED_QUERY).matches,
   };
+
+  document.documentElement.style.setProperty("--page-transition-bg", TRANSITION_BG);
 
   const overlay = (() => {
     const existing = document.querySelector(".page-transition");
@@ -76,30 +76,41 @@
     }
   }
 
-  function readCachedFrames() {
-    try {
-      const raw = sessionStorage.getItem(FRAME_CACHE_KEY);
-      if (!raw) {
-        return null;
+  function preloadFrame() {
+    if (state.framePromise) {
+      return state.framePromise;
+    }
+    const promise = new Promise((resolve) => {
+      const image = new Image();
+      let done = false;
+      const finish = (value) => {
+        if (done) {
+          return;
+        }
+        done = true;
+        window.clearTimeout(timeout);
+        resolve(value);
+      };
+      const timeout = window.setTimeout(() => finish(null), FRAME_PRELOAD_TIMEOUT);
+      image.decoding = "async";
+      image.fetchPriority = "high";
+      image.onload = () => {
+        if (image.decode) {
+          image.decode().then(() => finish(FRAME_URL)).catch(() => finish(FRAME_URL));
+          return;
+        }
+        finish(FRAME_URL);
+      };
+      image.onerror = () => finish(null);
+      image.src = FRAME_URL;
+    });
+    state.framePromise = promise.then((value) => {
+      if (!value) {
+        state.framePromise = null;
       }
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed) || !parsed.every((frame) => typeof frame === "string")) {
-        return null;
-      }
-      return parsed;
-    } catch {
-      return null;
-    }
-  }
-
-  function writeCachedFrames(frames) {
-    if (!frames.length) {
-      return;
-    }
-    try {
-      sessionStorage.setItem(FRAME_CACHE_KEY, JSON.stringify(frames));
-    } catch {
-    }
+      return value;
+    });
+    return state.framePromise;
   }
 
   function mountOverlay() {
@@ -118,13 +129,6 @@
     }
   }
 
-  function stopFrames() {
-    if (state.frameTimer) {
-      window.clearInterval(state.frameTimer);
-      state.frameTimer = 0;
-    }
-  }
-
   function clearRevealTimer() {
     if (state.revealTimer) {
       window.clearTimeout(state.revealTimer);
@@ -132,33 +136,16 @@
     }
   }
 
-  function minimumPlaybackDuration(frames) {
-    return Math.max(REVEAL_DURATION, frames.length * FRAME_INTERVAL);
-  }
-
-  function canReveal(frames) {
-    if (!state.playbackActive) {
-      return false;
-    }
-    if (state.reducedMotion) {
-      return true;
-    }
-    return Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames);
-  }
-
   function cleanup() {
     clearRevealTimer();
-    stopFrames();
     overlay.classList.remove("is-active", "is-revealing");
     overlay.dataset.phase = "idle";
     overlay.dataset.mode = "fallback";
     document.documentElement.classList.remove("page-transition-preload");
     lockScroll(false);
     state.busy = false;
-    state.waitingForLoad = false;
     state.playbackActive = false;
     state.playbackStartedAt = 0;
-    state.frameCount = 0;
     if (overlay.parentNode) {
       overlay.remove();
     }
@@ -171,6 +158,7 @@
   }
 
   function activate(phase) {
+    document.documentElement.style.setProperty("--page-transition-bg", TRANSITION_BG);
     mountOverlay();
     overlay.classList.add("is-active");
     overlay.dataset.phase = phase;
@@ -178,58 +166,8 @@
     lockScroll(true);
   }
 
-  async function getFrames() {
-    if (state.cachedFrames) {
-      return state.cachedFrames;
-    }
-    const cached = readCachedFrames();
-    if (cached) {
-      state.cachedFrames = cached;
-      return cached;
-    }
-    if (state.framePromise) {
-      return state.framePromise;
-    }
-    state.framePromise = fetch(FRAME_MANIFEST_URL, { cache: "force-cache" })
-      .then((response) => (response.ok ? response.json() : []))
-      .then((value) => (Array.isArray(value) ? value : []))
-      .then((value) =>
-        value
-          .filter((frame) => typeof frame === "string" && frame.length > 0)
-          .map((frame) => new URL(frame, FRAME_ROOT).toString()),
-      )
-      .catch(() => [])
-      .then((value) => {
-        state.framePromise = null;
-        if (value.length) {
-          state.cachedFrames = value;
-          writeCachedFrames(value);
-        }
-        return value;
-      });
-    return state.framePromise;
-  }
-
-  function preloadImage(src) {
-    return new Promise((resolve) => {
-      const image = new Image();
-      image.decoding = "async";
-      image.onload = () => resolve(src);
-      image.onerror = () => resolve(null);
-      image.src = src;
-      if (image.decode) {
-        image.decode().then(() => resolve(src)).catch(() => {});
-      }
-    });
-  }
-
-  async function startFramePlayback() {
+  async function showTransitionFrame() {
     if (state.reducedMotion || !state.playbackActive) {
-      return false;
-    }
-    const frames = await getFrames();
-    if (!state.playbackActive || !frames.length || !overlay.isConnected || overlay.dataset.phase === "reveal") {
-      overlay.dataset.mode = "fallback";
       return false;
     }
     const img = overlay.querySelector(".page-transition__frame");
@@ -237,39 +175,19 @@
       overlay.dataset.mode = "fallback";
       return false;
     }
-    const firstFrame = await preloadImage(frames[0]);
-    if (!state.playbackActive || !overlay.isConnected || overlay.dataset.phase === "reveal" || !firstFrame) {
+    const frame = await preloadFrame();
+    if (!state.playbackActive || !overlay.isConnected || overlay.dataset.phase === "reveal" || !frame) {
       overlay.dataset.mode = "fallback";
       return false;
     }
-    img.src = firstFrame;
-    overlay.dataset.mode = "frames";
+    img.src = frame;
+    overlay.dataset.mode = "frame";
     state.playbackStartedAt = Date.now();
-    state.frameCount = 1;
-    let index = 1;
-    const tick = () => {
-      if (!overlay.isConnected || overlay.dataset.phase === "reveal" || !state.playbackActive) {
-        stopFrames();
-        return;
-      }
-      img.src = frames[index];
-      index = (index + 1) % frames.length;
-      state.frameCount += 1;
-      if (index === 0 && canReveal(frames)) {
-        stopFrames();
-        revealOverlay();
-      }
-    };
-    stopFrames();
-    state.frameTimer = window.setInterval(tick, FRAME_INTERVAL);
     return true;
   }
 
   function revealOverlay() {
     if (!overlay.isConnected || !state.playbackActive) {
-      return;
-    }
-    if (!state.reducedMotion && state.frameCount < 1) {
       return;
     }
     overlay.dataset.phase = "reveal";
@@ -280,6 +198,13 @@
     }, state.reducedMotion ? 1 : REVEAL_DURATION);
   }
 
+  function scheduleReveal(delay) {
+    clearRevealTimer();
+    state.revealTimer = window.setTimeout(() => {
+      revealOverlay();
+    }, delay);
+  }
+
   function beginNavigation(href) {
     if (state.busy) {
       return;
@@ -287,6 +212,8 @@
     state.busy = true;
     safeWritePending(href);
     activate("leaving");
+    state.playbackActive = true;
+    void showTransitionFrame();
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
         window.location.assign(href);
@@ -361,37 +288,22 @@
     const pending = safeReadPending();
     if (!pending) {
       cleanup();
+      void preloadFrame();
       return;
     }
     mountOverlay();
     activate("holding");
     state.playbackActive = true;
-    void startFramePlayback();
+    const frameReady = showTransitionFrame();
     await waitForLoad();
     safeClearPending();
     if (state.reducedMotion) {
       revealOverlay();
       return;
     }
-    const frames = await getFrames();
-    if (!frames.length) {
-      revealOverlay();
-      return;
-    }
-    if (state.frameCount >= frames.length && Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames)) {
-      revealOverlay();
-      return;
-    }
-    const check = window.setInterval(() => {
-      if (!overlay.isConnected) {
-        window.clearInterval(check);
-        return;
-      }
-      if (state.frameCount >= frames.length && Date.now() - state.playbackStartedAt >= minimumPlaybackDuration(frames)) {
-        window.clearInterval(check);
-        revealOverlay();
-      }
-    }, FRAME_INTERVAL);
+    const hasFrame = await frameReady;
+    const elapsed = hasFrame ? Date.now() - state.playbackStartedAt : PLAYBACK_DURATION;
+    scheduleReveal(Math.max(0, PLAYBACK_DURATION - elapsed));
   }
 
   function init() {
@@ -399,6 +311,7 @@
       document.addEventListener("DOMContentLoaded", init, { once: true });
       return;
     }
+    document.documentElement.style.setProperty("--page-transition-bg", TRANSITION_BG);
     window.addEventListener("pageshow", handlePageLifecycle);
     window.addEventListener("pagehide", handlePageLifecycle);
     installGuards();

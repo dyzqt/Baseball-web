@@ -247,6 +247,12 @@ body.moment-page .moment-card {
   touch-action: none;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  body.moment-page .moment-card {
+    touch-action: pan-y;
+  }
+}
+
 body.moment-page .moment-card:active {
   cursor: grabbing;
 }
@@ -397,6 +403,8 @@ body.page-transition-lock {
 .page-transition__frame {
   object-fit: contain;
   opacity: 0;
+  transform: scale(0.5);
+  transform-origin: center center;
   transition: opacity 120ms linear;
   z-index: 1;
 }
@@ -411,7 +419,7 @@ body.page-transition-lock {
 }
 
 .page-transition.is-revealing {
-  animation: transition-rise 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: transition-rise 480ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 @keyframes transition-rise {

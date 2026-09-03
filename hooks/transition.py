@@ -59,6 +59,8 @@ body.page-transition-lock {
 .page-transition__frame {
   object-fit: contain;
   opacity: 0;
+  transform: scale(0.5);
+  transform-origin: center center;
   transition: opacity 120ms linear;
   z-index: 1;
 }
