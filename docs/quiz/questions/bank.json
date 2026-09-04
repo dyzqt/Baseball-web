@@ -1,0 +1,454 @@
+{
+  "title": "局面判断",
+  "items": [
+    {
+      "id": "force-at-first",
+      "figure": "svg/force-at-first.svg",
+      "situation": {
+        "inning": "五局上",
+        "outs": 0,
+        "balls": 1,
+        "strikes": 0,
+        "runners": ["1B"]
+      },
+      "prompt": "一垒有人。击球员打出落地滚地球，一垒手接球后持球踩上一垒。这个出局是什么？",
+      "options": ["触杀", "封杀", "接杀", "三振"],
+      "answer": 1,
+      "explain": "一垒有人时，击球员成为必须进一垒的击跑员，属于强制进垒。防守员持球踩一垒即可封杀，不必碰到跑者。",
+      "ruleHref": "../notes/详细规则/#quiz-force-or-tag",
+      "ruleLabel": "触杀与封杀"
+    },
+    {
+      "id": "infield-fly",
+      "figure": "svg/infield-fly.svg",
+      "situation": {
+        "inning": "三局下",
+        "outs": 0,
+        "balls": 0,
+        "strikes": 1,
+        "runners": ["1B", "2B"]
+      },
+      "prompt": "无人出局，一二垒有人。击球员打出界内高飞球（不是平飞、不是触击），内野手以普通守备就能接住。裁判最可能怎么处理？",
+      "options": [
+        "等球落地，看能不能制造双杀",
+        "宣告内野飞球，击球员出局，球仍是活球",
+        "直接死球，跑者全部回原垒",
+        "算界外球，继续打"
+      ],
+      "answer": 1,
+      "explain": "少于两出局，且一垒和二垒都有人（或满垒）时，内野手以普通守备可接的界内高飞球（不含平飞和触击）应判内野飞球，击球员出局。球仍是活球，跑者可以冒进，但强制进垒解除。",
+      "ruleHref": "../notes/详细规则/#quiz-infield-fly",
+      "ruleLabel": "内野飞球规则"
+    },
+    {
+      "id": "dropped-third",
+      "figure": "svg/dropped-third.svg",
+      "situation": {
+        "inning": "六局上",
+        "outs": 1,
+        "balls": 2,
+        "strikes": 2,
+        "runners": ["1B"]
+      },
+      "prompt": "一出局、一垒有人。下一球是第三好球，但捕手没有合法接住。击球员可以跑上一垒吗？",
+      "options": [
+        "可以，捕手必须再触杀或封杀",
+        "不可以，击球员直接出局",
+        "只有教练喊跑才能跑",
+        "算坏球，球数继续"
+      ],
+      "answer": 1,
+      "explain": "漏接第三好球时，只有一垒空着，或已经两出局，击球员才能成为跑者。一垒有人且少于两出局时，击球员直接出局，避免防守故意漏接再做双杀。",
+      "ruleHref": "../notes/详细规则/#quiz-dropped-third",
+      "ruleLabel": "漏接第三好球"
+    },
+    {
+      "id": "walk-scores",
+      "figure": "svg/walk-scores.svg",
+      "situation": {
+        "inning": "九局下",
+        "outs": 2,
+        "balls": 3,
+        "strikes": 1,
+        "runners": ["1B", "2B", "3B"]
+      },
+      "prompt": "两出局、满垒、3 坏 1 好。下一球是坏球。三垒跑者依法踩过本垒后，这一分算不算？",
+      "options": ["不算，因为已经两出局", "算，满垒保送强制送回本垒", "要看击球员有没有挥棒", "退回三垒，等下一球"],
+      "answer": 1,
+      "explain": "四坏球保送时，每个被迫进垒的跑者都安全进一个垒。满垒时三垒跑者强制回本垒；即使两出局，只要依法踩垒，这一分也算。",
+      "ruleHref": "../notes/详细规则/#quiz-when-score",
+      "ruleLabel": "何时算分"
+    },
+    {
+      "id": "tag-up",
+      "figure": "svg/tag-up.svg",
+      "situation": {
+        "inning": "七局上",
+        "outs": 1,
+        "balls": 0,
+        "strikes": 0,
+        "runners": ["3B"]
+      },
+      "prompt": "一出局，三垒有人。外野高飞球被直接接住。三垒跑者想冲回本垒，最早可以在什么时候离垒？",
+      "options": [
+        "球还在空中、守备员还没碰到就可以冲",
+        "守备员第一次碰到球之后",
+        "等击球员跑到一垒之后",
+        "接杀后必须留在三垒，不能再跑"
+      ],
+      "answer": 1,
+      "explain": "飞球被接杀后，跑者要先补垒。最早可在守备员第一次碰到球时离垒，不必等手套完全收稳。提前离垒时，要等防守提出申诉才可能出局。",
+      "ruleHref": "../notes/详细规则/#quiz-tag-up",
+      "ruleLabel": "接杀后要先回垒"
+    },
+    {
+      "id": "foul-two-strikes",
+      "figure": "svg/foul-two-strikes.svg",
+      "situation": {
+        "inning": "二局下",
+        "outs": 0,
+        "balls": 1,
+        "strikes": 2,
+        "runners": []
+      },
+      "prompt": "两好一坏。击球员打成普通界外球（不是触击，也不是被直接接住的擦棒）。打完这一球，好球数是？",
+      "options": ["3 好，击球员三振", "仍是 2 好", "球数清零重计", "变回 1 好"],
+      "answer": 1,
+      "explain": "两好球之后的普通界外球不会变成第三好球。例外主要是：两好后的触击界外，以及被直接接住的擦棒好球。",
+      "ruleHref": "../notes/详细规则/#quiz-foul-two-strikes",
+      "ruleLabel": "两好后的界外球"
+    },
+    {
+      "id": "force-at-home",
+      "figure": "svg/force-at-home.svg",
+      "situation": {
+        "inning": "八局下",
+        "outs": 1,
+        "balls": 0,
+        "strikes": 1,
+        "runners": ["1B", "2B", "3B"]
+      },
+      "prompt": "一出局、满垒。击球员打出内野滚地球。捕手接到传球后持球踩住本垒，没有碰到跑者。三垒跑者出局的方式是？",
+      "options": ["触杀", "封杀", "接杀", "漏垒申诉"],
+      "answer": 1,
+      "explain": "满垒滚地球时，每个垒包都是强制进垒，本垒也一样。持球踩本垒就能封杀三垒跑者，不必触碰跑者本人。",
+      "ruleHref": "../notes/详细规则/#quiz-force-advance",
+      "ruleLabel": "强制进垒"
+    },
+    {
+      "id": "tag-at-plate",
+      "figure": "svg/tag-at-plate.svg",
+      "situation": {
+        "inning": "四局上",
+        "outs": 1,
+        "balls": 0,
+        "strikes": 0,
+        "runners": ["2B"]
+      },
+      "prompt": "一出局，只有二垒有人。跑者抢本垒。这个局面要让他出局，通常需要怎么做？",
+      "options": [
+        "踩本垒即可（封杀）",
+        "持球触碰到跑者（触杀）",
+        "等跑者自己停下来",
+        "直接判干扰出局"
+      ],
+      "answer": 1,
+      "explain": "只有二垒有人时，本垒没有强制进垒。要让跑者出局，通常必须持球触碰跑者本人或手套中的球。",
+      "ruleHref": "../notes/详细规则/#quiz-force-or-tag",
+      "ruleLabel": "触杀与封杀"
+    },
+    {
+      "id": "pitcher-balk",
+      "figure": "svg/pitcher-balk.svg",
+      "situation": {
+        "inning": "四局上",
+        "outs": 0,
+        "balls": 0,
+        "strikes": 1,
+        "runners": ["1B"]
+      },
+      "prompt": "一垒有人。投手站在投手板上，已经做出向击球员投球的动作，又突然改成向一垒牵制。通常怎么判？",
+      "options": ["合法牵制", "投手犯规，一垒跑者进二垒", "一垒跑者出局", "算一次好球"],
+      "answer": 1,
+      "explain": "有跑者时，投手在板上开始投球动作后又改成牵制，属于不合法假动作（balk）。罚则是每个跑者安全进一个垒，不是跑者出局。",
+      "ruleHref": "../notes/详细规则/#quiz-balk",
+      "ruleLabel": "投手犯规"
+    },
+    {
+      "id": "pitcher-empty-base",
+      "figure": "svg/pitcher-empty-base.svg",
+      "situation": {
+        "inning": "五局下",
+        "outs": 1,
+        "balls": 1,
+        "strikes": 1,
+        "runners": ["2B"]
+      },
+      "prompt": "只有二垒有人，没有人正在抢一垒。投手站在板上，把球传向空着的一垒。通常怎么判？",
+      "options": [
+        "合法牵制",
+        "投手犯规",
+        "只算一次坏球",
+        "击球员保送"
+      ],
+      "answer": 1,
+      "explain": "站在投手板上把球传向没有跑者、也没有正在抢进的垒，属于投手犯规。例外是：为了处理正在抢进该垒的跑者，或做合法申诉。",
+      "ruleHref": "../notes/详细规则/#quiz-pickoff",
+      "ruleLabel": "牵制与拾垒"
+    },
+    {
+      "id": "pitcher-strikeout",
+      "figure": "svg/pitcher-strikeout.svg",
+      "situation": {
+        "inning": "三局上",
+        "outs": 1,
+        "balls": 2,
+        "strikes": 2,
+        "runners": []
+      },
+      "prompt": "一出局，垒上无人，球数 2 好 2 坏。下一球经过好球带，击球员没挥棒，捕手合法接住。结果是？",
+      "options": ["坏球，变成 2 好 3 坏", "保送上一垒", "三振出局", "漏接第三好球，击球员可以跑"],
+      "answer": 2,
+      "explain": "未挥棒但球经过好球带，记一个好球。累计三个好球，且捕手合法接住，击球员三振出局。若第三好球没接住，垒上无人时击球员还可以跑一垒。",
+      "ruleHref": "../notes/详细规则/#quiz-strike-walk",
+      "ruleLabel": "三振与保送"
+    },
+    {
+      "id": "outfield-catch",
+      "figure": "svg/outfield-catch.svg",
+      "situation": {
+        "inning": "六局下",
+        "outs": 0,
+        "balls": 0,
+        "strikes": 0,
+        "runners": []
+      },
+      "prompt": "击球员打出界内高飞球，中外野手在球落地前用手套合法接住，没有掉出来。击球员的结果是？",
+      "options": ["一垒安打", "接杀出局", "界外球", "保送"],
+      "answer": 1,
+      "explain": "飞球在落地前被合法接住，击球员接杀出局。外野、内野都一样。",
+      "ruleHref": "../notes/详细规则/#quiz-fly-out",
+      "ruleLabel": "接杀、飞球和滚地球"
+    },
+    {
+      "id": "outfield-homerun",
+      "figure": "svg/outfield-homerun.svg",
+      "situation": {
+        "inning": "八局上",
+        "outs": 1,
+        "balls": 2,
+        "strikes": 1,
+        "runners": ["2B"]
+      },
+      "prompt": "一出局，二垒有人。击球员把球在空中合法打出界内方向的外野围墙外。击球员和二垒跑者会怎样？",
+      "options": [
+        "击球员上一垒，跑者到三垒",
+        "两人依次踩垒回到本垒，各得一分",
+        "球出界，这次打击不算",
+        "只算二垒安打"
+      ],
+      "answer": 1,
+      "explain": "界内飞球在空中飞出围墙，是本垒打。击球员和垒上跑者都必须按顺序踩垒回到本垒后才算得分。落地后再弹出围墙，不是本垒打。",
+      "ruleHref": "../notes/详细规则/#quiz-hits",
+      "ruleLabel": "安打与打击结果"
+    },
+    {
+      "id": "outfield-bounce-out",
+      "figure": "svg/outfield-bounce-out.svg",
+      "situation": {
+        "inning": "二局上",
+        "outs": 0,
+        "balls": 1,
+        "strikes": 0,
+        "runners": ["1B"]
+      },
+      "prompt": "一垒有人。界内球先落地，再弹跳出外野围墙。最常见的正式处理是？",
+      "options": [
+        "本垒打，两人得分",
+        "比赛继续，能跑几垒算几垒",
+        "死球，击球员和跑者从投球时位置各进两个垒",
+        "击球员出局"
+      ],
+      "answer": 2,
+      "explain": "按正式规则，界内球落地后再弹出围墙，球成死球；击球员和跑者从投球时的位置各进两个垒。本题中击球员上一二垒，原一垒跑者到三垒，不是本垒打。",
+      "ruleHref": "../notes/详细规则/#quiz-dead-ball-bases",
+      "ruleLabel": "死球后的垒包判定"
+    },
+    {
+      "id": "hbp",
+      "figure": "svg/hbp.svg",
+      "situation": {
+        "inning": "四局上",
+        "outs": 0,
+        "balls": 1,
+        "strikes": 1,
+        "runners": []
+      },
+      "prompt": "垒上无人。投球打中击球员身体。当时球不在好球带内，击球员也没有挥棒。裁判通常怎么判？",
+      "options": [
+        "击球员出局",
+        "记一个好球，继续打",
+        "死球，击球员上一垒",
+        "比赛继续，能跑就跑"
+      ],
+      "answer": 2,
+      "explain": "投球打中击球员，且球不在好球带、击球员没有挥棒、也没有主动把身体伸向球时，通常判触身球：死球，击球员安全上一垒。",
+      "ruleHref": "../notes/详细规则/#quiz-hbp",
+      "ruleLabel": "被球击中"
+    },
+    {
+      "id": "foul-bunt-two-strikes",
+      "figure": "svg/foul-bunt-two-strikes.svg",
+      "situation": {
+        "inning": "七局下",
+        "outs": 1,
+        "balls": 1,
+        "strikes": 2,
+        "runners": []
+      },
+      "prompt": "两好球后，击球员触击，球弹成界外。这一球怎么算？",
+      "options": [
+        "跟普通界外一样，继续打",
+        "记三振，击球员出局",
+        "算坏球",
+        "死球，跑者各进一垒"
+      ],
+      "answer": 1,
+      "explain": "普通界外在两好球后一般不加第三好球。但两好球后再触击成界外，按规则记为第三好球，击球员三振出局。",
+      "ruleHref": "../notes/详细规则/#quiz-bunt",
+      "ruleLabel": "触击与短打"
+    },
+    {
+      "id": "overrun-first",
+      "figure": "svg/overrun-first.svg",
+      "situation": {
+        "inning": "一局上",
+        "outs": 0,
+        "balls": 0,
+        "strikes": 0,
+        "runners": []
+      },
+      "prompt": "击球员打出内野滚地球，安全踩过一垒后顺势冲出垒包，立刻回头，没有往二垒的意思。防守员这时持球碰到他，算不算出局？",
+      "options": [
+        "算出局，冲过垒包就能触杀",
+        "不算。对一垒的正常冲过可以回头",
+        "要看有没有两出局",
+        "自动上二垒"
+      ],
+      "answer": 1,
+      "explain": "击跑员可以对一垒正常冲过，再立刻回头。只要没有明显改去二垒的意图，回头过程中一般不能被触杀。",
+      "ruleHref": "../notes/详细规则/#quiz-overrun",
+      "ruleLabel": "超过一垒"
+    },
+    {
+      "id": "infield-fly-only-first",
+      "figure": "svg/infield-fly-only-first.svg",
+      "situation": {
+        "inning": "五局下",
+        "outs": 1,
+        "balls": 0,
+        "strikes": 0,
+        "runners": ["1B"]
+      },
+      "prompt": "一人出局，只有一垒有人。击球员打出内野手能轻松接住的界内高飞球。裁判会宣告内野飞球吗？",
+      "options": [
+        "会，击球员出局，球变死球",
+        "会，击球员出局，球仍是活球",
+        "不会。内野飞球要一垒和二垒都有人，或满垒",
+        "不会，这球直接算安打"
+      ],
+      "answer": 2,
+      "explain": "内野飞球的前提是少于两出局，并且至少一垒和二垒有人（或满垒）。只有一垒有人时不宣告；飞球被接住则击球员出局，没接住则按普通活球处理。",
+      "ruleHref": "../notes/详细规则/#quiz-infield-fly",
+      "ruleLabel": "内野飞球规则"
+    },
+    {
+      "id": "dropped-third-two-out",
+      "figure": "svg/dropped-third-two-out.svg",
+      "situation": {
+        "inning": "九局上",
+        "outs": 2,
+        "balls": 1,
+        "strikes": 2,
+        "runners": ["1B", "2B", "3B"]
+      },
+      "prompt": "两出局，满垒。第三好球捕手没接住。击球员还能不能跑一垒？",
+      "options": [
+        "不能，一垒有人时直接出局",
+        "能。两出局时，即使一垒有人也可以跑",
+        "能，但必须等裁判挥手",
+        "不能，两出局后打席结束"
+      ],
+      "answer": 1,
+      "explain": "漏接第三好球能否跑一垒，看的是：一垒空着，或者已经两出局。两出局时即使一垒有人，击球员仍可尝试跑上一垒，防守方必须把一垒做成出局。",
+      "ruleHref": "../notes/详细规则/#quiz-dropped-third",
+      "ruleLabel": "漏接第三好球"
+    },
+    {
+      "id": "third-out-force-no-run",
+      "figure": "svg/third-out-force-no-run.svg",
+      "situation": {
+        "inning": "八局下",
+        "outs": 2,
+        "balls": 0,
+        "strikes": 1,
+        "runners": ["3B"]
+      },
+      "prompt": "两出局，三垒有人。击球员打出滚地球，三垒跑者踩回本垒，随后击跑员在一垒被封杀，形成第三出局。这分算不算？",
+      "options": [
+        "算，因为已经踩到本垒",
+        "不算。第三出局是击跑员在一垒的强制出局",
+        "算半个分",
+        "要看谁先完成动作"
+      ],
+      "answer": 1,
+      "explain": "第三出局如果是强制出局，或者发生在击球员到达一垒之前，该分通常无效。本题里击跑员在一垒被封杀，就是这种情况，即使三垒跑者先踩到本垒也不计分。",
+      "ruleHref": "../notes/详细规则/#quiz-no-run",
+      "ruleLabel": "哪些情况不算分"
+    },
+    {
+      "id": "obstruction",
+      "figure": "svg/obstruction.svg",
+      "situation": {
+        "inning": "三局上",
+        "outs": 0,
+        "balls": 2,
+        "strikes": 1,
+        "runners": ["2B"]
+      },
+      "prompt": "二垒跑者往三垒跑。三垒手当时没持球，也不是正在接球，却挡在跑垒线上让跑者过不去。这通常算什么？",
+      "options": [
+        "进攻干扰，跑者出局",
+        "防守阻碍，跑者可能被判上到相应垒包",
+        "阻挡，双方都没事",
+        "跑者自己绕开，继续活球"
+      ],
+      "answer": 1,
+      "explain": "防守员在没有持球、也不是正在处理球时非法挡住跑者，属于防守阻碍。裁判通常会保护跑者，判他到达本应到达的垒包。",
+      "ruleHref": "../notes/详细规则/#quiz-obstruction",
+      "ruleLabel": "干扰与阻碍"
+    },
+    {
+      "id": "passing-runner",
+      "figure": "svg/passing-runner.svg",
+      "situation": {
+        "inning": "六局下",
+        "outs": 0,
+        "balls": 0,
+        "strikes": 0,
+        "runners": ["1B", "2B"]
+      },
+      "prompt": "一垒、二垒都有人。二垒跑者在垒间停住，一垒跑者从后面超过了他。怎么判？",
+      "options": [
+        "两人都可以继续跑",
+        "后面的跑者出局",
+        "前面的跑者出局",
+        "死球，都回原垒"
+      ],
+      "answer": 1,
+      "explain": "跑垒员不能超过自己前面的跑者。后跑超过前跑时，后跑被判出局，比赛通常仍是活球。",
+      "ruleHref": "../notes/详细规则/#quiz-pass-runner",
+      "ruleLabel": "跑垒员之间的顺序"
+    }
+  ]
+}

@@ -38,9 +38,11 @@ extra:
 
 extra_css:
   - assets/stylesheets/extra.css
+  - assets/stylesheets/quiz.css
 
 extra_javascript:
   - assets/javascripts/gallery.js
+  - assets/javascripts/quiz.js
 
 exclude_docs: |
   guide/*
@@ -55,5 +57,7 @@ nav:
   - 训练:
       - 传接球训练: writing/传接球.md
       - 打击训练: writing/打击.md
+  - 练习:
+      - 局面判断: quiz/index.md
   - 时刻: gallery/index.md
   - 其他: other/index.md
