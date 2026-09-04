@@ -134,6 +134,12 @@
   height: auto;
 }
 
+.media-grid.umpire-gifs img {
+  max-height: 260px;
+  object-fit: contain;
+  background: #0f172a;
+}
+
 .media-video,
 .media-frame {
   aspect-ratio: 16 / 9;
