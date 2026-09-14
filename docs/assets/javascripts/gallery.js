@@ -275,6 +275,7 @@
     open: false,
     pointers: new Map(),
     gesture: null,
+    trigger: null,
   };
 
   function ensureViewer() {
@@ -387,8 +388,9 @@
     if (!(img instanceof HTMLImageElement)) {
       return;
     }
-    viewer.img.src = img.src;
+    viewer.img.src = img.dataset.fullSrc || img.currentSrc || img.src;
     viewer.img.alt = img.alt || "";
+    viewer.trigger = card;
     resetViewerTransform();
     viewer.root.hidden = false;
     viewer.root.setAttribute("aria-hidden", "false");
@@ -401,11 +403,13 @@
       return;
     }
     viewer.open = false;
+    viewer.trigger?.focus();
     viewer.root.hidden = true;
     viewer.root.setAttribute("aria-hidden", "true");
     setBodyLock(false);
     viewer.img.src = "";
     viewer.img.alt = "";
+    viewer.trigger = null;
     resetViewerTransform();
   }
 
