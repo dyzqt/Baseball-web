@@ -22,8 +22,32 @@
   background: linear-gradient(180deg, #f8fbff 0%, #ffffff 220px);
 }
 
-.md-nav__title {
-  display: none;
+@media screen and (min-width: 60em) {
+  .md-nav__title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 59.9375em) {
+  .md-nav--primary > .md-nav__title {
+    display: none;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--nested > nav.md-nav > .md-nav__title {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 2.4rem;
+    min-height: 2.4rem;
+    padding: 0 1rem;
+    line-height: 2.4rem;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--nested > nav.md-nav > .md-nav__title .md-nav__icon {
+    position: static;
+    flex: 0 0 1.2rem;
+    margin: 0 0.4rem 0 0;
+  }
 }
 
 .md-typeset h1 {
