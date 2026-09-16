@@ -1,6 +1,7 @@
 html.field-page,
 body.field-page {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #5c9c45;
 }
 
@@ -15,7 +16,6 @@ body.field-page .md-top {
 
 body.field-page .md-main {
   width: 100%;
-  height: 100svh;
   min-height: 100svh;
   background: #5c9c45;
 }
@@ -25,8 +25,7 @@ body.field-page .md-content,
 body.field-page .md-content__inner {
   display: block;
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  min-height: 100svh;
   max-width: none;
   margin: 0;
   padding: 0;
@@ -40,12 +39,216 @@ body.field-page .md-typeset > h1,
 }
 
 #baseball-field-practice {
-  display: grid;
   width: 100%;
-  height: 100%;
-  place-items: center;
-  overflow: hidden;
+  min-height: 100svh;
   background: #5c9c45;
+}
+
+.field-shell {
+  width: 100%;
+  min-height: 100svh;
+}
+
+.field-topbar {
+  display: flex;
+  align-items: center;
+  height: 3.5rem;
+  padding: 0.55rem 0.85rem;
+  background: #5c9c45;
+}
+
+body.field-page .field-back {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(224, 242, 254, 0.28);
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.14);
+  color: #ffffff !important;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+body.field-page .field-back:hover,
+body.field-page .field-back:visited {
+  border-color: rgba(224, 242, 254, 0.28);
+  background: rgba(14, 165, 233, 0.28);
+  color: #ffffff !important;
+}
+
+.field-back:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 2px;
+}
+
+.field-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 17rem);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: center;
+  width: min(100%, 90rem);
+  min-height: calc(100svh - 3.5rem);
+  margin: 0 auto;
+  padding: 1rem clamp(0.85rem, 2vw, 2rem);
+}
+
+.baseball-field__stage {
+  display: grid;
+  min-width: 0;
+  place-items: center;
+}
+
+.field-scoreboard {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(224, 242, 254, 0.2);
+  border-radius: 1rem;
+  background: rgba(2, 6, 23, 0.88);
+  color: #e0f2fe;
+  box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.22);
+}
+
+.field-scoreboard__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(224, 242, 254, 0.16);
+}
+
+.field-scoreboard__header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.field-scoreboard__header span {
+  color: #93c5fd;
+  font-size: 0.72rem;
+}
+
+.field-scoreboard__teams {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.field-scoreboard__team,
+.field-scoreboard__inning {
+  display: grid;
+  grid-template-columns: minmax(3rem, 1fr) 2rem 2.2rem 2rem;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.field-scoreboard__team span,
+.field-scoreboard__inning > span,
+.field-scoreboard__count > span {
+  color: #bae6fd;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.field-scoreboard__team strong,
+.field-scoreboard__inning strong,
+.field-scoreboard__count strong {
+  color: #ffffff;
+  font: 800 1.35rem / 1 "JetBrains Mono", "Cascadia Code", monospace;
+  text-align: center;
+}
+
+.field-scoreboard__step,
+.field-scoreboard__half,
+.field-scoreboard__actions button {
+  display: inline-grid;
+  min-width: 2rem;
+  min-height: 2rem;
+  place-items: center;
+  padding: 0.25rem;
+  border: 1px solid rgba(125, 211, 252, 0.3);
+  border-radius: 0.45rem;
+  background: rgba(14, 165, 233, 0.12);
+  color: #e0f2fe;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.field-scoreboard__step:hover:not(:disabled),
+.field-scoreboard__half:hover,
+.field-scoreboard__actions button:hover {
+  border-color: #7dd3fc;
+  background: #0369a1;
+  color: #ffffff;
+}
+
+.field-scoreboard__step:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.field-scoreboard__step:focus-visible,
+.field-scoreboard__half:focus-visible,
+.field-scoreboard__actions button:focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 2px;
+}
+
+.field-scoreboard__inning {
+  grid-template-columns: minmax(3rem, 1fr) 2rem 2.2rem 3.6rem 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(224, 242, 254, 0.16);
+}
+
+.field-scoreboard__half {
+  min-height: 2rem;
+  color: #bae6fd;
+  font-size: 0.75rem;
+}
+
+.field-scoreboard__count-grid {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(224, 242, 254, 0.16);
+}
+
+.field-scoreboard__count {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.field-scoreboard__count > div {
+  display: grid;
+  grid-template-columns: 2rem 2.2rem 2rem;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.field-scoreboard__count strong {
+  font-size: 1.1rem;
+}
+
+.field-scoreboard__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.field-scoreboard__actions button {
+  min-height: 2.2rem;
+  color: #bae6fd;
+  font-size: 0.75rem;
 }
 
 .baseball-field {
@@ -157,21 +360,58 @@ body.field-page .md-typeset > h1,
   outline-offset: 3px;
 }
 
-@media (max-aspect-ratio: 1 / 1) {
-  .baseball-field {
-    width: 100vw;
-    height: 100vw;
+@media (min-width: 851px) {
+  .field-layout .baseball-field {
+    width: min(100%, calc(100svh - 5.5rem));
+    height: auto;
+    aspect-ratio: 1;
   }
 }
 
-@media (min-aspect-ratio: 1 / 1) {
-  .baseball-field {
-    width: 100svh;
-    height: 100svh;
+@media (max-width: 850px) {
+  html.field-page,
+  body.field-page {
+    overflow-y: auto;
+  }
+
+  .field-topbar {
+    height: 3.25rem;
+  }
+
+  .field-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: 0;
+    padding: 0.85rem;
+  }
+
+  .field-layout .baseball-field {
+    width: min(100%, 42rem);
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .field-scoreboard {
+    width: min(100%, 42rem);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .field-layout {
+    padding: 0.6rem;
+  }
+
+  .field-scoreboard {
+    padding: 0.8rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .field-back,
+  .field-scoreboard__step,
+  .field-scoreboard__half,
+  .field-scoreboard__actions button,
   .baseball-field__player {
     transition: none;
   }
