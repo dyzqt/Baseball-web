@@ -25,6 +25,13 @@
     { id: "runner-4", number: "4", name: "击球员" },
   ];
 
+  const BASES = {
+    first: [78.284, 61.716],
+    second: [50, 33.432],
+    third: [21.716, 61.716],
+    home: [50, 90],
+  };
+
   const defaultPositions = {
     P: [50, 63.1],
     C: [50, 94],
@@ -35,9 +42,9 @@
     LF: [16, 20],
     CF: [50, 12],
     RF: [84, 20],
-    "runner-1": [78.284, 61.716],
-    "runner-2": [50, 33.432],
-    "runner-3": [21.716, 61.716],
+    "runner-1": BASES.first,
+    "runner-2": BASES.second,
+    "runner-3": BASES.third,
     "runner-4": [50, 87],
   };
 
@@ -126,9 +133,17 @@
           <div class="baseball-field__stage">
             <div class="baseball-field" data-field tabindex="0" aria-label="棒球比赛场地，可拖动场上球员">
               <svg class="baseball-field__diagram" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+                <defs>
+                  <pattern id="baseball-outfield-mow" width="180" height="180" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+                    <rect width="90" height="180" fill="rgba(255, 255, 255, 0.045)" />
+                  </pattern>
+                  <pattern id="baseball-infield-mow" width="110" height="110" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                    <rect width="55" height="110" fill="rgba(255, 255, 255, 0.055)" />
+                  </pattern>
+                </defs>
                 <rect class="baseball-field__outfield" x="0" y="0" width="1000" height="1000" />
-                <path class="baseball-field__warning-track" d="M 0 600 Q 500 -140 1000 600" />
-                <polygon class="baseball-field__infield" points="500,900 782.84,617.16 500,334.32 217.16,617.16" />
+                <rect class="baseball-field__outfield-mow" x="0" y="0" width="1000" height="1000" />
+                <path class="baseball-field__skinned-infield" d="M 500 900 L 100.2 500.2 A 422.22 422.22 0 0 1 899.8 500.2 Z" />
                 <path class="baseball-field__base-line baseball-field__base-line--left" d="M 500 900 L 217.16 617.16 L 0 400" />
                 <path class="baseball-field__base-line baseball-field__base-line--right" d="M 500 900 L 782.84 617.16 L 1000 400" />
                 <circle class="baseball-field__mound" cx="500" cy="637.78" r="40" />

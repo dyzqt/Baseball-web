@@ -278,16 +278,14 @@ body.field-page .field-back:visited {
   fill: #5c9c45;
 }
 
-.baseball-field__warning-track {
-  fill: none;
-  stroke: rgba(183, 131, 86, 0.92);
-  stroke-width: 28;
+.baseball-field__outfield-mow {
+  fill: url("#baseball-outfield-mow");
 }
 
-.baseball-field__infield {
+.baseball-field__skinned-infield {
   fill: #bd8351;
-  stroke: rgba(117, 71, 40, 0.42);
-  stroke-width: 5;
+  stroke: rgba(117, 71, 40, 0.45);
+  stroke-width: 3;
 }
 
 .baseball-field__base-line {
