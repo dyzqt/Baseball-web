@@ -15,9 +15,11 @@ theme:
     - search.highlight
 
 hooks:
+  - hooks/article_images.py
   - hooks/gallery.py
 
 watch:
+  - hooks/article_images.py
   - hooks/gallery.py
 
 plugins:
